@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 function SearchBar({ onSearch }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchType, setSearchType] = useState('s');
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (searchTerm) {
-            onSearch(searchTerm, searchType);
+            setLoading(true);
+            await onSearch(searchTerm, searchType);
+            setLoading(false);
         }
     };
 
@@ -23,7 +26,9 @@ function SearchBar({ onSearch }) {
                 <option value="s">Title</option>
                 <option value="genre">Genre</option>
             </select>
-            <button type="submit">Search</button>
+            <button type="submit" disabled={loading}>
+                {loading ? 'Loading...' : 'Search'}
+            </button>
         </form>
     );
 }

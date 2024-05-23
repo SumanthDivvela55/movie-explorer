@@ -6,9 +6,13 @@ function App() {
   const [movies, setMovies] = useState([]);
 
   const handleSearch = async (searchTerm, searchType) => {
-    const response = await fetch(`http://localhost:5000/api/movies?searchTerm=${searchTerm}&searchType=${searchType}`);
-    const data = await response.json();
-    setMovies(data.Search || []);
+    try {
+      const response = await fetch(`http://localhost:5000/api/movies?searchTerm=${searchTerm}&searchType=${searchType}`);
+      const data = await response.json();
+      setMovies(data.Search || []);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+    }
   };
 
   return (
